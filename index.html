@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Whisper</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <h1><i class="fas fa-comment-dots"></i> Whisper</h1>
+  </header>
+
+
+  <div class="container">
+
+        <p id="session-username-display"></p>
+
+    <!-- Create Post Button -->
+    <button onclick="showCreatePostForm()"><i class="fas fa-plus"></i> Create New Post</button>
+    
+    <!-- Create Post Form -->
+    <div id="create-post-form" style="display: none;">
+      <input type="text" id="post-title" placeholder="Enter your title..." />
+      <textarea id="post-content" placeholder="What's on your mind?"></textarea>
+      <div class="form-actions">
+        <button class="cancel" onclick="hideCreatePostForm()"><i class="fas fa-times"></i> Cancel</button>
+        <button onclick="submitPost()"><i class="fas fa-paper-plane"></i> Submit</button>
+      </div>
+    </div>
+
+    <hr />
+
+
+    <!-- Search Box -->
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="Search posts..." />
+      <button onclick="searchPosts()"><i class="fas fa-search"></i> Search</button>
+    </div>
+
+    <!-- Post container -->
+    <div id="posts">
+      <!-- Example of the new post structure (will be dynamically loaded in actual implementation) -->
+      <div class="post" style="display: none;">
+        <div class="post-header">
+          <p class="post-username"><i class="fas fa-user-circle"></i> Username</p>
+          <button class="dots-btn"><i class="fas fa-ellipsis-v"></i></button>
+        </div>
+        <h3 class="post-title">Post Title</h3>
+        <div class="post-content">Post content goes here...</div>
+        <div class="comments">
+          <!-- Comments will go here -->
+        </div>
+        
+            <div class="comment-counter">
+        <p id="comment-count">Comments: 0</p>
+    </div>
+
+      </div>
+      <!-- Posts will be dynamically loaded here -->
+    </div>
+    
+    <!-- Empty state message -->
+    <div id="no-posts" class="no-posts" style="display: none;">
+      <i class="fas fa-comment-slash fa-2x"></i>
+      <p>No posts yet. Be the first to create one!</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
