@@ -315,3 +315,34 @@ function deletePost(postId) {
     }
 }
 
+let currentPostId = null;
+
+function openCommentModal(postId) {
+  currentPostId = postId;
+  document.getElementById('comment-text').value = '';
+  document.getElementById('comment-modal').style.display = 'flex';
+}
+
+function closeCommentModal() {
+  document.getElementById('comment-modal').style.display = 'none';
+  currentPostId = null;
+}
+
+function submitComment() {
+  const text = document.getElementById('comment-text').value.trim();
+  if (!text || !currentPostId) return;
+
+  fetch(`/api/posts/${currentPostId}/comments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ text, username: getSessionUsername() })
+  })
+  .then(res => res.json())
+  .then(comment => {
+    closeCommentModal();
+    loadPosts(); // or append the new comment to the post directly
+  });
+}
+
