@@ -148,6 +148,7 @@ function toggleComments(postId) {
 
 // Fetch comments from Comment API (port 8001)
 // Fetch comments and replies for a post
+// Function to fetch and display comments
 function fetchComments(postId) {
     fetch(`http://localhost:8001/posts/${postId}/comments`)
         .then(res => res.json())
@@ -155,18 +156,44 @@ function fetchComments(postId) {
             const container = document.getElementById(`comments-${postId}`);
             container.innerHTML = ""; // Clear previous comments
 
-            // Helper function to display a comment
-            function displayComment(comment, replies) {
+            if (comments.length === 0) {
+                container.innerHTML = "<p>No comments yet.</p>";
+            }
+
+            comments.forEach(comment => {
                 const commentDiv = document.createElement("div");
                 commentDiv.classList.add("comment");
 
                 commentDiv.innerHTML = `
-                    <p><strong>${comment.username || "User"}:</strong> ${comment.text}</p>
+                    <p><strong>${comment.username || "Anonymous"}:</strong> ${comment.text}</p>
                     <button onclick="replyToComment(${comment.id}, ${postId})">Reply</button>
                     <div class="replies" id="replies-${comment.id}">
                         <!-- Replies will go here -->
                     </div>
                 `;
+
+                container.appendChild(commentDiv);
+            });
+        })
+        .catch(err => {
+            console.error("Error fetching comments:", err);
+            alert("Failed to fetch comments.");
+        });
+}
+
+// Function to toggle visibility of comments
+function toggleComments(postId) {
+    const container = document.getElementById(`comments-${postId}`);
+    const isHidden = container.style.display === "none" || container.innerHTML === "";
+
+    if (isHidden) {
+        fetchComments(postId);  // Fetch and display comments
+        container.style.display = "block";  // Show comments
+    } else {
+        container.style.display = "none";  // Hide comments
+    }
+}
+
 
                 // Show replies under this comment
                 replies.forEach(reply => {
@@ -177,7 +204,7 @@ function fetchComments(postId) {
                 });
 
                 container.appendChild(commentDiv);
-            }
+            
 
             // Iterate over each comment and display it with its replies
             comments.forEach(comment => {
@@ -187,8 +214,7 @@ function fetchComments(postId) {
                     displayComment(comment, replies);
                 }
             });
-        });
-}
+
 
 
 // Submit reply to a comment
