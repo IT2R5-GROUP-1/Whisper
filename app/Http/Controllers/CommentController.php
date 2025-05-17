@@ -29,6 +29,7 @@ class CommentController extends Controller
             'post_id' => $postId,
             'parent_comment_id' => null,
             'content' => $request->content,
+            'username' => $request->username, // ADD THIS
         ]);
 
         return response()->json(['message' => 'Comment added', 'comment' => $comment], 201);
@@ -54,8 +55,17 @@ class CommentController extends Controller
             'post_id' => $parentComment->post_id,
             'parent_comment_id' => $commentId,
             'content' => $request->content,
+            'username' => $request->username, // ADD THIS
         ]);
 
         return response()->json(['message' => 'Reply added', 'reply' => $reply], 201);
     }
+
+public function getComments($postId)
+{
+    $comments = Comment::where('post_id', $postId)->orderBy('created_at', 'asc')->get();
+
+    return response()->json($comments);
+}
+
 }

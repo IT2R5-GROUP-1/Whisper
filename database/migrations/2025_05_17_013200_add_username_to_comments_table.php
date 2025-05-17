@@ -11,17 +11,12 @@ return new class extends Migration
      *
      * @return void
      */
-public function up()
-{
-    Schema::create('posts', function (Blueprint $table) {
-        $table->id();
-        $table->string('title');
-        $table->text('content');
-        $table->timestamps();
-        $table->string('username')->nullable();
-    });
-}
-
+    public function up()
+    {
+        Schema::table('comments', function (Blueprint $table) {
+            //
+        });
+    }
 
     /**
      * Reverse the migrations.
@@ -30,6 +25,8 @@ public function up()
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::table('comments', function (Blueprint $table) {
+            //
+        });
     }
 };

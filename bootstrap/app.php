@@ -58,6 +58,7 @@ $app->singleton(
 | the default version. You may register other files below as needed.
 |
 */
+$app->configure('cors');
 
 $app->configure('app');
 
@@ -71,6 +72,13 @@ $app->configure('app');
 | route or middleware that'll be assigned to some specific routes.
 |
 */
+$app->middleware([
+    App\Http\Middleware\CorsMiddleware::class,
+]);
+
+$app->middleware([
+    Fruitcake\Cors\HandleCors::class,
+]);
 
 // $app->middleware([
 //     App\Http\Middleware\ExampleMiddleware::class

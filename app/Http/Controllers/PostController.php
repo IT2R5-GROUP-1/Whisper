@@ -9,21 +9,27 @@ use Illuminate\Support\Facades\Validator;
 class PostController extends Controller
 {
     // Create post
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'content' => 'required|string',
-        ]);
+public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'title' => 'required|string',
+        'content' => 'required|string',
+        'username' => 'required|string', // ✅ Validate username
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $post = Post::create($request->only('title', 'content'));
-
-        return response()->json(['message' => 'Post created', 'post' => $post], 201);
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
     }
+
+    $post = Post::create([
+        'title' => $request->title,
+        'content' => $request->content,
+        'username' => $request->username, // ✅ Save it
+    ]);
+
+    return response()->json(['message' => 'Post created', 'post' => $post], 201);
+}
+
 
     // List posts or search
     public function index(Request $request)

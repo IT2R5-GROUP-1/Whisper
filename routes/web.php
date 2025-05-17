@@ -23,5 +23,6 @@ $router->get('/posts/{id}', 'PostController@show');
 $router->delete('/posts/{id}', 'PostController@destroy');
 
 $router->post('/posts/{postId}/comments', 'CommentController@store');
+$router->get('/posts/{postId}/comments', 'CommentController@getComments');
 $router->post('/comments/{commentId}/reply', 'CommentController@reply');
 
