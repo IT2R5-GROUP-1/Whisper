@@ -7,6 +7,8 @@ RUN docker-php-ext-install pdo pdo_mysql
 # Enable Apache mod_rewrite for Lumen
 RUN a2enmod rewrite
 
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 # Set working directory
 WORKDIR /var/www/html
 
