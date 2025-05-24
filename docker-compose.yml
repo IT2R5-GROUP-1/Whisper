@@ -1,24 +1,37 @@
+version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 8000:80
-    volumes:
-      - .:/var/www/html
+      - "8000:80"
     depends_on:
       - db
+    volumes:
+      - .:/var/www/html
+    networks:
+      - whisper-net
 
   db:
-    image: mysql:5.7
+    image: mysql:8.0
+    container_name: whisper-mysql
     restart: always
     environment:
-      MYSQL_DATABASE: whisper
       MYSQL_ROOT_PASSWORD: 
-    volumes:
-      - dbdata:/var/lib/mysql
+      MYSQL_DATABASE: whisper
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 
     ports:
-      - 3310:3307
+      - "3307:3307"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - whisper-net
 
 volumes:
-  dbdata:
+  db_data:
+
+networks:
+  whisper-net:
