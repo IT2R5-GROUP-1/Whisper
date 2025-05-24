@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Joke Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0f172a;
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 2.2rem;
+      color: #38bdf8;
+    }
+
+    #joke-box {
+      background-color: #1e293b;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      max-width: 600px;
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      margin-bottom: 25px;
+    }
+
+    button {
+      background-color: #38bdf8;
+      color: #0f172a;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0ea5e9;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>😂 Random Joke Generator</h1>
+
+  <div id="joke-box">Loading a hilarious joke...</div>
+
+  <button onclick="getJoke()">Get Another Joke</button>
+
+  <script>
+    async function getJoke() {
+      const jokeBox = document.getElementById('joke-box');
+      jokeBox.innerText = 'Fetching a new joke...';
+      try {
+        const response = await fetch('http://localhost:8000/joke');
+        const data = await response.json();
+        jokeBox.innerText = data.joke;
+      } catch (error) {
+        jokeBox.innerText = 'Oops! Could not fetch a joke.';
+        console.error(error);
+      }
+    }
+
+    // Load a joke on first load
+    window.onload = getJoke;
+  </script>
+
+</body>
+</html>

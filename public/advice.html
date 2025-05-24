@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Random Advice</title>
+</head>
+<body>
+    <h1>Random Advice</h1>
+    <p id="advice">Loading...</p>
+    <button onclick="getAdvice()">Get Advice</button>
+
+    <script>
+        async function getAdvice() {
+            const res = await fetch('http://localhost:8000/advice');
+            const data = await res.json();
+            document.getElementById('advice').textContent = data.advice;
+        }
+
+        getAdvice(); // load once on page load
+    </script>
+</body>
+</html>

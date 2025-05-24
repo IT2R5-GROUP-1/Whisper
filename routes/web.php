@@ -26,3 +26,12 @@ $router->post('/posts/{postId}/comments', 'CommentController@store');
 $router->get('/posts/{postId}/comments', 'CommentController@getComments');
 $router->post('/comments/{commentId}/reply', 'CommentController@reply');
 
+$router->get('/joke', 'JokeController@getJoke');
+
+$router->get('/trivia', 'TriviaController@getTrivia');
+
+$router->get('/catfact', 'CatFactController@getCatFact');
+
+$router->get('/activity', 'ActivityController@getActivity');
+
+$router->get('/advice', 'AdviceController@randomAdvice');

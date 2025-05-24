@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cat Facts</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: center;
+      background-color: #fff9f9;
+    }
+
+    h1 {
+      color: #ff6f61;
+    }
+
+    #fact {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      color: #333;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ff6f61;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e65c4f;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Random Cat Fact 🐱</h1>
+  <div id="fact">Loading a cat fact for Mamaming...</div>
+<button id="newFactBtn" type="button">New Fact</button>
+
+  <script>
+    const factEl = document.getElementById('fact');
+    const btn = document.getElementById('newFactBtn');
+
+    async function fetchCatFact() {
+      factEl.textContent = 'Loading...';
+      try {
+        const res = await fetch('http://localhost:8000/catfact');
+        const data = await res.json();
+        factEl.textContent = data.fact;
+      } catch (err) {
+        factEl.textContent = 'Failed to fetch a cat fact. 😿';
+      }
+    }
+
+    btn.addEventListener('click', fetchCatFact);
+
+    // Fetch initial fact
+    fetchCatFact();
+  </script>
+
+</body>
+</html>

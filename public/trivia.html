@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Random Trivia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+    #question {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    #answer {
+      font-weight: bold;
+      margin-top: 15px;
+      color: green;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Random Trivia</h1>
+  <div id="category"></div>
+  <div id="question">Loading...</div>
+  <div id="answer"></div>
+  <button id="newTriviaBtn">Get New Trivia</button>
+
+  <script>
+    const categoryEl = document.getElementById('category');
+    const questionEl = document.getElementById('question');
+    const answerEl = document.getElementById('answer');
+    const btn = document.getElementById('newTriviaBtn');
+
+    async function fetchTrivia() {
+      answerEl.textContent = ''; // clear old answer
+      questionEl.textContent = 'Loading...';
+      categoryEl.textContent = '';
+      try {
+        const res = await fetch('http://localhost:8000/trivia');
+        const data = await res.json();
+        categoryEl.textContent = `Category: ${data.category} | Difficulty: ${data.difficulty}`;
+        questionEl.textContent = data.question;
+      } catch (err) {
+        questionEl.textContent = 'Failed to load trivia.';
+      }
+    }
+
+    btn.addEventListener('click', fetchTrivia);
+
+    // Show answer on question click
+    questionEl.addEventListener('click', () => {
+      if (answerEl.textContent) {
+        answerEl.textContent = '';
+      } else {
+        fetch('/trivia')
+          .then(res => res.json())
+          .then(data => {
+            answerEl.textContent = `Answer: ${data.answer}`;
+          });
+      }
+    });
+
+    // Initial fetch
+    fetchTrivia();
+  </script>
+
+</body>
+</html>
