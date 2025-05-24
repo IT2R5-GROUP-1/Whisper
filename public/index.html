@@ -56,66 +56,95 @@
   </a>
 </header>
 
+<div class="sidebar-trigger-area"></div>
+<aside class="sidebar" id="sidebar">
+  <!-- Sidebar Header -->
+  <div class="sidebar-header">
+    <h2><i class="fas fa-comment-dots"></i> Whisper Hub</h2>
+  </div>
 
-  <div class="container">
-    <p id="session-username-display"></p>
+  <div id="sidebar-wrapper">
+  <div id="sidebar">
 
-    <!-- Create Post Button -->
-    <button onclick="showCreatePostForm()"><i class="fas fa-plus"></i> Create New Post</button>
+  <!-- Sidebar Navigation -->
+  <!-- Sidebar Navigation -->
+<a href="index.html" class="nav-item"><i class="fas fa-home"></i> Home</a>
+<a href="post.html" class="nav-item"><i class="fas fa-comments"></i> Whisper Posts</a>
+<a href="jokes.html" class="nav-item"><i class="fas fa-laugh"></i> Joke Generator</a>
+<a href="catfacts.html" class="nav-item"><i class="fas fa-cat"></i> Cat Facts</a>
+<a href="activity.html" class="nav-item"><i class="fas fa-lightbulb"></i> Activity Ideas</a>
+<a href="advice.html" class="nav-item"><i class="fas fa-heart"></i> Random Advice</a>
+<a href="trivia.html" class="nav-item"><i class="fas fa-question-circle"></i> Trivia Quiz</a>
 
-    <!-- Create Post Form -->
-    <div id="create-post-form" style="display: none;">
-      <input type="text" id="post-title" placeholder="Enter your title..." />
-      <textarea id="post-content" placeholder="What's on your mind?"></textarea>
-      <div class="form-actions">
-        <button class="cancel" onclick="hideCreatePostForm()"><i class="fas fa-times"></i> Cancel</button>
-        <button onclick="submitPost()"><i class="fas fa-paper-plane"></i> Submit</button>
-      </div>
-    </div>
 
-    <hr />
+  </div>
+</div>
+<div class="sidebar-overlay"></div>
 
-    <!-- Search Box -->
-    <div class="search-container">
-      <input type="text" id="search-input" placeholder="Search posts..." />
-      <button onclick="searchPosts()"><i class="fas fa-search"></i> Search</button>
-    </div>
+</aside>
 
-    <!-- Post container -->
-    <div id="posts">
-      <!-- Post template (hidden) -->
-      <div class="post" style="display: none;">
-        <div class="post-header">
-          <p class="post-username"><i class="fas fa-user-circle"></i> Username</p>
-          <button class="dots-btn"><i class="fas fa-ellipsis-v"></i></button>
-        </div>
-        <h3 class="post-title">Post Title</h3>
-        <div class="post-content">Post content goes here...</div>
-        <div class="comments">
-          <!-- Comments will go here -->
-        </div>
-        <div class="comment-counter">
-          <p id="comment-count">Comments: 0</p>
-        </div>
-      </div>
-    </div>
+<!-- Overlay outside sidebar -->
+<div class="sidebar-overlay" onclick="closeSidebar()"></div>
 
-    <!-- Empty state -->
-    <div id="no-posts" class="no-posts" style="display: none;">
-      <i class="fas fa-comment-slash fa-2x"></i>
-      <p>No posts yet. Be the first to create one!</p>
+<div class="container">
+  <p id="session-username-display"></p>
+
+  <!-- Create Post Button -->
+  <button onclick="showCreatePostForm()"><i class="fas fa-plus"></i> Create New Post</button>
+
+  <!-- Create Post Form -->
+  <div id="create-post-form" style="display: none;">
+    <input type="text" id="post-title" placeholder="Enter your title..." />
+    <textarea id="post-content" placeholder="What's on your mind?"></textarea>
+    <div class="form-actions">
+      <button class="cancel" onclick="hideCreatePostForm()"><i class="fas fa-times"></i> Cancel</button>
+      <button onclick="submitPost()"><i class="fas fa-paper-plane"></i> Submit</button>
     </div>
   </div>
 
-  <!-- Comment Modal -->
-  <div id="comment-modal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeCommentModal()">&times;</span>
-      <textarea id="comment-text" placeholder="Write your comment..."></textarea>
-      <button onclick="submitComment()">Post Comment</button>
+  <hr />
+
+  <!-- Search Box -->
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="Search posts..." />
+    <button onclick="searchPosts()"><i class="fas fa-search"></i> Search</button>
+  </div>
+
+  <!-- Post container -->
+  <div id="posts">
+    <!-- Post template (hidden) -->
+    <div class="post" style="display: none;">
+      <div class="post-header">
+        <p class="post-username"><i class="fas fa-user-circle"></i> Username</p>
+        <button class="dots-btn"><i class="fas fa-ellipsis-v"></i></button>
+      </div>
+      <h3 class="post-title">Post Title</h3>
+      <div class="post-content">Post content goes here...</div>
+      <div class="comments">
+        <!-- Comments will go here -->
+      </div>
+      <div class="comment-counter">
+        <p id="comment-count">Comments: 0</p>
+      </div>
     </div>
   </div>
 
-  <script src="js/script.js"></script>
+  <!-- Empty state -->
+  <div id="no-posts" class="no-posts" style="display: none;">
+    <i class="fas fa-comment-slash fa-2x"></i>
+    <p>No posts yet. Be the first to create one!</p>
+  </div>
+</div>
+
+<!-- Comment Modal -->
+<div id="comment-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeCommentModal()">&times;</span>
+    <textarea id="comment-text" placeholder="Write your comment..."></textarea>
+    <button onclick="submitComment()">Post Comment</button>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
 </body>
 </html>

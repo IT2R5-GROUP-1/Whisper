@@ -21,28 +21,50 @@ function getSessionUsername() {
 // === Run when page loads ===
 document.addEventListener("DOMContentLoaded", function () {
   const username = getSessionUsername();
-  document.getElementById("session-username-display").innerText = `You are logged in as: ${username}`;
+  const usernameDisplay = document.getElementById("session-username-display");
+  if (usernameDisplay) {
+    usernameDisplay.innerText = `You are logged in as: ${username}`;
+  }
   fetchPosts(); // Load posts on page load
+
+  // Sidebar toggle logic
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  const trigger = document.querySelector('.sidebar-trigger-area');
+
+  if(trigger && sidebar && overlay){
+    trigger.addEventListener('click', () => {
+      sidebar.classList.add('show');
+      overlay.classList.add('active');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('show');
+      overlay.classList.remove('active');
+    });
+  }
 });
 
 // === Fetch all posts from backend ===
 function fetchPosts() {
   fetch("http://localhost:8000/posts")
     .then(res => res.json())
-    .then(posts => renderPosts(posts));
+    .then(posts => renderPosts(posts))
+    .catch(err => console.error("Error fetching posts:", err));
 }
 
 // === Render posts to the page ===
 function renderPosts(posts) {
   const container = document.getElementById("posts");
+  if (!container) return;
+
   container.innerHTML = ""; // Clear current posts
 
   posts.forEach(post => {
     const postDiv = document.createElement("div");
     postDiv.classList.add("post");
     postDiv.id = `post-${post.id}`;
-    
-    // Create the post's HTML
+
     postDiv.innerHTML = `
       <div class="post-header">
         <p class="post-username"><i class="fas fa-user-circle"></i> ${post.username || 'Anonymous'}</p>
@@ -68,7 +90,6 @@ function addComment(postId) {
   if (!content) return;
 
   const username = getSessionUsername();
-  console.log("Posting comment with username:", username);
 
   fetch(`http://localhost:8000/posts/${postId}/comments`, {
     method: "POST",
@@ -76,12 +97,15 @@ function addComment(postId) {
     body: JSON.stringify({ content, username })
   })
     .then(res => res.json())
-    .then(() => fetchComments(postId)); // Reload comments
+    .then(() => fetchComments(postId)) // Reload comments
+    .catch(err => console.error("Error posting comment:", err));
 }
 
 // === Toggle show/hide comments ===
 function toggleComments(postId) {
   const container = document.getElementById(`comments-${postId}`);
+  if (!container) return;
+
   const isHidden = container.style.display === "none" || container.innerHTML === "";
   if (isHidden) {
     fetchComments(postId); // Fetch and show
@@ -97,6 +121,8 @@ function fetchComments(postId) {
     .then(res => res.json())
     .then(comments => {
       const container = document.getElementById(`comments-${postId}`);
+      if (!container) return;
+
       container.innerHTML = "";
 
       const topLevel = comments.filter(c => !c.parent_comment_id);
@@ -120,8 +146,10 @@ function displayComment(comment, allReplies, container) {
   `;
   container.appendChild(commentDiv);
 
-  // === Render all replies under this comment ===
+  // Render all replies under this comment
   const repliesContainer = document.getElementById(`replies-${comment.id}`);
+  if (!repliesContainer) return;
+
   const replies = allReplies.filter(r => r.parent_comment_id === comment.id);
   replies.forEach(reply => {
     const replyDiv = document.createElement("div");
@@ -142,12 +170,15 @@ function replyToComment(commentId, postId) {
     body: JSON.stringify({ content, username: getSessionUsername() })
   })
     .then(res => res.json())
-    .then(() => fetchComments(postId)); // Refresh comments
+    .then(() => fetchComments(postId)) // Refresh comments
+    .catch(err => console.error("Error posting reply:", err));
 }
 
 // === Show/hide the delete button ===
 function toggleDeleteButton(postId) {
   const deleteBtn = document.getElementById(`delete-btn-${postId}`);
+  if (!deleteBtn) return;
+
   const isHidden = deleteBtn.style.display === "none";
   deleteBtn.style.display = isHidden ? "inline-block" : "none";
 }
@@ -160,7 +191,8 @@ function deletePost(postId) {
     })
       .then(res => {
         if (res.ok) {
-          document.getElementById(`post-${postId}`).remove();
+          const postElem = document.getElementById(`post-${postId}`);
+          if (postElem) postElem.remove();
           alert("Post deleted successfully.");
         } else {
           alert("Failed to delete the post.");
@@ -185,8 +217,8 @@ function showCreatePostForm() {
 
 // === Submit a new post to the server ===
 async function submitPost() {
-  const title = document.getElementById("post-title").value;
-  const content = document.getElementById("post-content").value;
+  const title = document.getElementById("post-title")?.value;
+  const content = document.getElementById("post-content")?.value;
 
   if (!title || !content) {
     alert("Please fill out both title and content!");
@@ -253,42 +285,18 @@ function searchPosts() {
     return;
   }
 
-  fetch(`http://localhost:8000/posts?q=${encodeURIComponent(query)}`)
+  fetch(`http://localhost:8000/posts/search?q=${encodeURIComponent(query)}`)
     .then(res => res.json())
-    .then(posts => {
-      const container = document.getElementById("posts");
-      container.innerHTML = "";
-
-      if (posts.length === 0) {
-        container.innerHTML = "<p>No posts found.</p>";
-        return;
-      }
-
-      posts.forEach(post => {
-        const postDiv = document.createElement("div");
-        postDiv.classList.add("post");
-        postDiv.id = `post-${post.id}`;
-        postDiv.innerHTML = `
-          <div class="post-header">
-            <p class="post-username"><i class="fas fa-user-circle"></i> ${post.username || 'Anonymous'}</p>
-            <p class="post-date">${new Date(post.created_at).toLocaleString()}</p>
-          </div>
-          <h3 class="post-title">${post.title}</h3>
-          <div class="post-content">${post.content}</div>
-        `;
-        container.appendChild(postDiv);
-      });
-    })
+    .then(posts => renderPosts(posts))
     .catch(err => {
-      console.error("Search failed:", err);
-      alert("Failed to fetch search results.");
+      console.error("Error searching posts:", err);
+      alert("Failed to search posts.");
     });
 }
 
-// === Prevent rapid clicking when going home ===
-let clicked = false;
-function goHome() {
-  if (clicked) return;
-  clicked = true;
-  window.location.href = 'index.html'; // Navigate to homepage
+// === Clear search and reload all posts ===
+function clearSearch() {
+  const input = document.getElementById("search-input");
+  if (input) input.value = "";
+  fetchPosts();
 }

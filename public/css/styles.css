@@ -371,3 +371,88 @@ textarea {
   margin-right: 0.3rem;
   vertical-align: middle;
 }
+
+/* Sidebar initial state */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px; /* hidden by default */
+  width: 250px;
+  height: 100vh;
+  background-color: #395692;
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 1100;
+  overflow-y: auto;
+}
+
+/* Sidebar trigger area */
+.sidebar-trigger-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 100vh;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+/* Show sidebar when hovering trigger or sidebar itself */
+.sidebar-trigger-area:hover + .sidebar,
+.sidebar:hover {
+  left: 0;
+}
+
+/* Overlay initial state */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 250px; /* next to sidebar */
+  width: calc(100vw - 250px);
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1090;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Show overlay when hovering sidebar or trigger */
+.sidebar-trigger-area:hover + .sidebar + .sidebar-overlay,
+.sidebar:hover + .sidebar-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+  /* Sidebar Navigation Styling */
+  #sidebar .nav-item {
+    display: block;
+    margin: 12px 0;
+    padding: 12px 20px;
+    background: #395692;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 17px;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: relative;
+  }
+  #sidebar .nav-item::before {
+    color: #888;
+    font-size: 13px;
+    position: absolute;
+    left: 20px;
+    top: 6px;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  #sidebar .nav-item:hover {
+    background: #1287ca;
+    box-shadow: 0 4px 16px rgba(19, 107, 207, 0.08);
+  }
+  #sidebar .nav-item i {
+    margin-right: 10px;
+  }
