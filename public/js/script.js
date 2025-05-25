@@ -1,7 +1,7 @@
 // === Set the base URL for the backend API ===
 const BASE_URL = window.location.hostname.includes("localhost")
   ? "http://localhost:8000"
-  : "https://your-lumen-backend.up.railway.app"; // replace with your Railway URL
+  : "https://whisper-production-7380.up.railway.app"; // replace with your Railway URL
 
 // === Generate a random session username ===
 function generateSessionUsername() {
