@@ -1,3 +1,8 @@
+// === Set the base URL for the backend API ===
+const BASE_URL = window.location.hostname.includes("localhost")
+  ? "http://localhost:8000"
+  : "https://your-lumen-backend.up.railway.app"; // replace with your Railway URL
+
 // === Generate a random session username ===
 function generateSessionUsername() {
   const adjectives = ["Happy", "Brave", "Clever", "Gentle", "Wise", "Swift", "Kind", "Bold", "Calm", "Witty"];
