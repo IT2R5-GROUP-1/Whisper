@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const overlay = document.querySelector('.sidebar-overlay');
   const trigger = document.querySelector('.sidebar-trigger-area');
 
-  if(trigger && sidebar && overlay){
+  if (trigger && sidebar && overlay) {
     trigger.addEventListener('click', () => {
       sidebar.classList.add('show');
       overlay.classList.add('active');
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // === Fetch all posts from backend ===
 function fetchPosts() {
-  fetch("http://localhost:8000/posts")
+  fetch(`${BASE_URL}/posts`)
     .then(res => res.json())
     .then(posts => renderPosts(posts))
     .catch(err => console.error("Error fetching posts:", err));
@@ -96,7 +96,7 @@ function addComment(postId) {
 
   const username = getSessionUsername();
 
-  fetch(`http://localhost:8000/posts/${postId}/comments`, {
+  fetch(`${BASE_URL}/posts/${postId}/comments`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content, username })
@@ -122,7 +122,7 @@ function toggleComments(postId) {
 
 // === Fetch and render comments + replies ===
 function fetchComments(postId) {
-  fetch(`http://localhost:8000/posts/${postId}/comments`)
+  fetch(`${BASE_URL}/posts/${postId}/comments`)
     .then(res => res.json())
     .then(comments => {
       const container = document.getElementById(`comments-${postId}`);
@@ -169,7 +169,7 @@ function replyToComment(commentId, postId) {
   const content = prompt("Enter your reply:");
   if (!content) return;
 
-  fetch(`http://localhost:8000/comments/${commentId}/reply`, {
+  fetch(`${BASE_URL}/comments/${commentId}/reply`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content, username: getSessionUsername() })
@@ -191,7 +191,7 @@ function toggleDeleteButton(postId) {
 // === Delete a post ===
 function deletePost(postId) {
   if (confirm("Are you sure you want to delete this post?")) {
-    fetch(`http://localhost:8000/posts/${postId}`, {
+    fetch(`${BASE_URL}/posts/${postId}`, {
       method: "DELETE",
     })
       .then(res => {
@@ -237,7 +237,7 @@ async function submitPost() {
   };
 
   try {
-    const res = await fetch("http://localhost:8000/posts", {
+    const res = await fetch(`${BASE_URL}/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -250,14 +250,10 @@ async function submitPost() {
     if (res.ok) {
       alert("Post created!");
 
-      // Clear form fields
       document.getElementById("post-title").value = "";
       document.getElementById("post-content").value = "";
 
-      // Hide form
       hideCreatePostForm();
-
-      // Refresh posts list
       fetchPosts();
     } else {
       alert(result.message || "Something went wrong.");
@@ -290,7 +286,7 @@ function searchPosts() {
     return;
   }
 
-  fetch(`http://localhost:8000/posts/search?q=${encodeURIComponent(query)}`)
+  fetch(`${BASE_URL}/posts/search?q=${encodeURIComponent(query)}`)
     .then(res => res.json())
     .then(posts => renderPosts(posts))
     .catch(err => {
