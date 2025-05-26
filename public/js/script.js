@@ -1,7 +1,7 @@
 // === Set the base URL for the backend API ===
 const BASE_URL = window.location.hostname.includes("localhost")
   ? "http://localhost:8000"
-  : "https://whisper-production-7380.up.railway.app"; // replace with your Railway URL
+  : "https://whisper-production-7380.up.railway.app/";
 
 // === Generate a random session username ===
 function generateSessionUsername() {
@@ -63,7 +63,7 @@ function renderPosts(posts) {
   const container = document.getElementById("posts");
   if (!container) return;
 
-  container.innerHTML = ""; // Clear current posts
+  container.innerHTML = "";
 
   posts.forEach(post => {
     const postDiv = document.createElement("div");
@@ -102,7 +102,7 @@ function addComment(postId) {
     body: JSON.stringify({ content, username })
   })
     .then(res => res.json())
-    .then(() => fetchComments(postId)) // Reload comments
+    .then(() => fetchComments(postId))
     .catch(err => console.error("Error posting comment:", err));
 }
 
@@ -113,10 +113,10 @@ function toggleComments(postId) {
 
   const isHidden = container.style.display === "none" || container.innerHTML === "";
   if (isHidden) {
-    fetchComments(postId); // Fetch and show
+    fetchComments(postId);
     container.style.display = "block";
   } else {
-    container.style.display = "none"; // Hide
+    container.style.display = "none";
   }
 }
 
@@ -151,7 +151,6 @@ function displayComment(comment, allReplies, container) {
   `;
   container.appendChild(commentDiv);
 
-  // Render all replies under this comment
   const repliesContainer = document.getElementById(`replies-${comment.id}`);
   if (!repliesContainer) return;
 
@@ -175,7 +174,7 @@ function replyToComment(commentId, postId) {
     body: JSON.stringify({ content, username: getSessionUsername() })
   })
     .then(res => res.json())
-    .then(() => fetchComments(postId)) // Refresh comments
+    .then(() => fetchComments(postId))
     .catch(err => console.error("Error posting reply:", err));
 }
 
@@ -249,10 +248,8 @@ async function submitPost() {
 
     if (res.ok) {
       alert("Post created!");
-
       document.getElementById("post-title").value = "";
       document.getElementById("post-content").value = "";
-
       hideCreatePostForm();
       fetchPosts();
     } else {
